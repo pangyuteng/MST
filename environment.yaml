@@ -22,7 +22,7 @@ dependencies:
     - scikit-learn==1.5.1  
     - seaborn==0.13.2
     - tqdm==4.66.5
-    - torchio==0.19.9
+    - torchio==0.21.3
     - wandb==0.17.9
     # - transformers 
     - -e .

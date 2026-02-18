@@ -4,6 +4,7 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 import torch.multiprocessing as mp 
 from torch.utils.data.sampler import WeightedRandomSampler, RandomSampler
+import torchio as tio
 
 
 
@@ -49,11 +50,11 @@ class DataModule(pl.LightningDataModule):
         if self.ds_train is not None:
             if self.weights is not None:
                 num_samples = len(self.weights) if self.num_train_samples is None else self.num_train_samples
-                sampler = WeightedRandomSampler(self.weights, num_samples=num_samples, generator=generator) 
+                sampler = WeightedRandomSampler(self.weights, num_samples=num_samples, generator=generator)
             else:
                 num_samples = len(self.ds_train) if self.num_train_samples is None else self.num_train_samples
                 sampler = RandomSampler(self.ds_train, num_samples=num_samples, replacement=False, generator=generator)
-            return DataLoader(self.ds_train, batch_size=self.batch_size, num_workers=self.num_workers, 
+            return tio.SubjectsLoader(self.ds_train, batch_size=self.batch_size, num_workers=self.num_workers,
                             sampler=sampler, generator=generator, drop_last=True, pin_memory=self.pin_memory)
         
         raise AssertionError("A training set was not initialized.")
@@ -62,7 +63,7 @@ class DataModule(pl.LightningDataModule):
         generator = torch.Generator()
         generator.manual_seed(self.seed)
         if self.ds_val is not None:
-            return DataLoader(self.ds_val, batch_size=self.batch_size_val, num_workers=self.num_workers, shuffle=False, 
+            return tio.SubjectsLoader(self.ds_val, batch_size=self.batch_size_val, num_workers=self.num_workers, shuffle=False,
                                 generator=generator, drop_last=False, pin_memory=self.pin_memory)
         
         raise AssertionError("A validation set was not initialized.")
@@ -72,7 +73,7 @@ class DataModule(pl.LightningDataModule):
         generator = torch.Generator()
         generator.manual_seed(self.seed)
         if self.ds_test is not None:
-            return DataLoader(self.ds_test, batch_size=self.batch_size_test, num_workers=self.num_workers, shuffle=False, 
+            return tio.SubjectsLoader(self.ds_test, batch_size=self.batch_size_test, num_workers=self.num_workers, shuffle=False,
                             generator = generator, drop_last=False, pin_memory=self.pin_memory)
        
         raise AssertionError("A test test set was not initialized.")
