@@ -147,6 +147,8 @@ class BasicClassifier(BasicModel):
     
     def _step(self, batch: dict, batch_idx: int, state: str, step: int):
         target = batch['target']
+        if isinstance(target,list):
+            target = torch.Tensor(target).type(torch.LongTensor).to(self.device)
         # target = target[:,None].float()
         batch_size = target.shape[0]
         self.batch_size = batch_size 
