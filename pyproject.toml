@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "MST"
 version = "0.0.1"
+readme = "README.md"
 dependencies = []
 
 [tool.setuptools.packages.find]
 # All the following settings are optional:
 where = ["."]
 include = ["mst*"]
-exclude = ["test*","media*","scripts*","tests*"]
-namespaces = false  # true by default
+exclude = []
 
 [tool.setuptools]
 include-package-data = true
