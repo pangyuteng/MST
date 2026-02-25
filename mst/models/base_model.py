@@ -44,7 +44,7 @@ class VeryBasicModel(pl.LightningModule):
     def on_validation_epoch_end(self) -> None:
         self._epoch_end("val")
 
-    def on_test_epoch_end(self, outputs) -> None:
+    def on_test_epoch_end(self) -> None:
         self._epoch_end("test")
 
 
